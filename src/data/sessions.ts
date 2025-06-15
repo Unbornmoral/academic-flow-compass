@@ -1,9 +1,21 @@
 
 export type CourseItem = 'NOTES' | 'ASSIGNMENTS/PROJECTS' | 'PAST QUESTIONS';
 
+export type UploadedFile = {
+  id: string;
+  name: string;
+  size: number;
+  type: string;
+  data: string; // base64 encoded file data
+  uploadDate: string;
+};
+
 export type Course = {
   name: string;
   items: CourseItem[];
+  files: {
+    [key in CourseItem]: UploadedFile[];
+  };
 };
 
 export type Semester = {
@@ -20,6 +32,11 @@ const generateCourses = (semester: string, year: number): Course[] => {
     return Array.from({ length: 8 }, (_, i) => ({
         name: `Course ${i + 1} for Y${year}S${semester === 'First Semester' ? 1: 2}`,
         items: ['NOTES', 'ASSIGNMENTS/PROJECTS', 'PAST QUESTIONS'],
+        files: {
+            'NOTES': [],
+            'ASSIGNMENTS/PROJECTS': [],
+            'PAST QUESTIONS': []
+        }
     }));
 }
 
