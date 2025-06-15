@@ -10,10 +10,10 @@ const Index = () => {
           <div className="flex flex-col items-center space-y-4 text-center">
             <div className="space-y-2">
               <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none">
-                Your University Companion
+                Political Science Companion
               </h1>
               <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
-                Access all your course materials, notes, and past questions in one place. Organized and easy to find.
+                Explore course materials, lecture notes, and past questions for your Political Science studies.
               </p>
             </div>
             <div className="space-x-4 pt-6">
