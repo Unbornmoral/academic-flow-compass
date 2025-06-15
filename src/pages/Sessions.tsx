@@ -6,11 +6,16 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { sessionsData, UploadedFile, CourseItem } from "@/data/sessions";
 import FileUpload from "@/components/FileUpload";
+import RoleSelector from "@/components/RoleSelector";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
+import { useRole } from "@/contexts/RoleContext";
+import { ArrowLeft } from "lucide-react";
 
 const SessionsPage = () => {
+  const { role, setRole, canUpload, canView } = useRole();
   const [courseFiles, setCourseFiles] = useLocalStorage<Record<string, Record<CourseItem, UploadedFile[]>>>('courseFiles', {});
 
   const getCourseKey = (yearName: string, semesterName: string, courseName: string) => {
@@ -33,9 +38,30 @@ const SessionsPage = () => {
     return courseFiles[courseKey]?.[itemType] || [];
   };
 
+  if (!role) {
+    return <RoleSelector onRoleSelect={setRole} />;
+  }
+
   return (
     <div className="container mx-auto py-10">
-      <h1 className="mb-8 text-4xl font-bold tracking-tight text-center">Sessions</h1>
+      <div className="flex items-center justify-between mb-8">
+        <h1 className="text-4xl font-bold tracking-tight">
+          Sessions - {role === 'developer' ? 'Developer' : role === 'lecturer' ? 'Lecturer' : 'Student'} Mode
+        </h1>
+        <Button variant="outline" onClick={() => setRole(null)}>
+          <ArrowLeft className="w-4 h-4 mr-2" />
+          Change Role
+        </Button>
+      </div>
+
+      {!canUpload && (
+        <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+          <p className="text-blue-800">
+            You are viewing in student mode. You can download and view files but cannot upload new ones.
+          </p>
+        </div>
+      )}
+
       <div className="space-y-8">
         {sessionsData.map((year) => (
           <Card key={year.name} id={year.name.replace(' ', '-')}>
@@ -64,6 +90,7 @@ const SessionsPage = () => {
                                         files={getCourseFiles(year.name, semester.name, course.name, item)}
                                         onFilesChange={(files) => updateCourseFiles(year.name, semester.name, course.name, item, files)}
                                         itemType={`${year.name}-${semester.name}-${course.name}-${item}`}
+                                        readOnly={!canUpload}
                                       />
                                     </AccordionContent>
                                   </AccordionItem>
