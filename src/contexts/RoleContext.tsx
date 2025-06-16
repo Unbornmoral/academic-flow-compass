@@ -1,13 +1,15 @@
 
 import { createContext, useContext, useState, ReactNode } from 'react';
 
-type Role = 'student' | 'lecturer' | 'developer' | null;
+type Role = 'student' | 'lecturer' | 'administrator' | 'developer' | null;
 
 interface RoleContextType {
   role: Role;
   setRole: (role: Role) => void;
   canUpload: boolean;
   canView: boolean;
+  canEditCourses: boolean;
+  canEditContent: boolean;
 }
 
 const RoleContext = createContext<RoleContextType | undefined>(undefined);
@@ -27,11 +29,20 @@ interface RoleProviderProps {
 export const RoleProvider = ({ children }: RoleProviderProps) => {
   const [role, setRole] = useState<Role>(null);
 
-  const canUpload = role === 'lecturer' || role === 'developer';
+  const canUpload = role === 'lecturer' || role === 'administrator' || role === 'developer';
   const canView = role !== null;
+  const canEditCourses = role === 'lecturer' || role === 'administrator' || role === 'developer';
+  const canEditContent = role === 'administrator' || role === 'developer';
 
   return (
-    <RoleContext.Provider value={{ role, setRole, canUpload, canView }}>
+    <RoleContext.Provider value={{ 
+      role, 
+      setRole, 
+      canUpload, 
+      canView, 
+      canEditCourses,
+      canEditContent 
+    }}>
       {children}
     </RoleContext.Provider>
   );
