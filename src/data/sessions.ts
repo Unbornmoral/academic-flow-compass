@@ -12,6 +12,7 @@ export type UploadedFile = {
 
 export type Course = {
   name: string;
+  units: number;
   items: CourseItem[];
   files: {
     [key in CourseItem]: UploadedFile[];
@@ -31,6 +32,7 @@ export type Year = {
 const generateCourses = (semester: string, year: number): Course[] => {
     return Array.from({ length: 12 }, (_, i) => ({
         name: `Course ${i + 1} for Y${year}S${semester === 'First Semester' ? 1: 2}`,
+        units: 3, // default units
         items: ['NOTES', 'ASSIGNMENTS/PROJECTS', 'PAST QUESTIONS'],
         files: {
             'NOTES': [],

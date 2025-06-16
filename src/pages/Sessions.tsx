@@ -7,7 +7,8 @@ import {
 } from "@/components/ui/accordion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { sessionsData, UploadedFile, CourseItem } from "@/data/sessions";
+import { Input } from "@/components/ui/input";
+import { sessionsData, UploadedFile, CourseItem, Course } from "@/data/sessions";
 import FileUpload from "@/components/FileUpload";
 import RoleSelector from "@/components/RoleSelector";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
@@ -17,6 +18,7 @@ import { ArrowLeft } from "lucide-react";
 const SessionsPage = () => {
   const { role, setRole, canUpload, canView } = useRole();
   const [courseFiles, setCourseFiles] = useLocalStorage<Record<string, Record<CourseItem, UploadedFile[]>>>('courseFiles', {});
+  const [courseUnits, setCourseUnits] = useLocalStorage<Record<string, number>>('courseUnits', {});
 
   const getCourseKey = (yearName: string, semesterName: string, courseName: string) => {
     return `${yearName}-${semesterName}-${courseName}`;
@@ -36,6 +38,19 @@ const SessionsPage = () => {
   const getCourseFiles = (yearName: string, semesterName: string, courseName: string, itemType: CourseItem): UploadedFile[] => {
     const courseKey = getCourseKey(yearName, semesterName, courseName);
     return courseFiles[courseKey]?.[itemType] || [];
+  };
+
+  const updateCourseUnits = (yearName: string, semesterName: string, courseName: string, units: number) => {
+    const courseKey = getCourseKey(yearName, semesterName, courseName);
+    setCourseUnits(prev => ({
+      ...prev,
+      [courseKey]: units
+    }));
+  };
+
+  const getCourseUnits = (yearName: string, semesterName: string, courseName: string): number => {
+    const courseKey = getCourseKey(yearName, semesterName, courseName);
+    return courseUnits[courseKey] || 3;
   };
 
   if (!role) {
@@ -77,7 +92,23 @@ const SessionsPage = () => {
                       <Accordion type="multiple" className="w-full space-y-4">
                         {semester.courses.map((course) => (
                           <AccordionItem value={course.name} key={course.name}>
-                            <AccordionTrigger className="font-semibold">{course.name}</AccordionTrigger>
+                            <AccordionTrigger className="font-semibold">
+                              <div className="flex items-center gap-3 w-full">
+                                <span className="flex-1 text-left">{course.name}</span>
+                                <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
+                                  <span className="text-sm text-muted-foreground">Units:</span>
+                                  <Input
+                                    type="number"
+                                    min="1"
+                                    max="10"
+                                    value={getCourseUnits(year.name, semester.name, course.name)}
+                                    onChange={(e) => updateCourseUnits(year.name, semester.name, course.name, parseInt(e.target.value) || 3)}
+                                    className="w-16 h-8 text-sm"
+                                    readOnly={!canUpload}
+                                  />
+                                </div>
+                              </div>
+                            </AccordionTrigger>
                             <AccordionContent>
                               <Accordion type="multiple" className="pl-4 space-y-2">
                                 {course.items.map((item) => (
