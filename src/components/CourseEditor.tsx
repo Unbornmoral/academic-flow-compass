@@ -55,7 +55,7 @@ const CourseEditor = ({
   };
 
   const handleDelete = () => {
-    if (confirm(`Are you sure you want to delete "${course.name}"?`)) {
+    if (confirm(`Are you sure you want to delete "${course.name}"? This action cannot be undone.`)) {
       onDeleteCourse(yearName, semesterName, course.name);
       setIsOpen(false);
     }
@@ -119,7 +119,8 @@ const CourseEditor = ({
             </Button>
             {canEditContent && (
               <Button variant="destructive" onClick={handleDelete}>
-                <Trash2 className="w-4 h-4" />
+                <Trash2 className="w-4 h-4 mr-2" />
+                Delete Course
               </Button>
             )}
           </div>
