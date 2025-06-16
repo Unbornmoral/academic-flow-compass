@@ -29,7 +29,7 @@ export type Year = {
 };
 
 const generateCourses = (semester: string, year: number): Course[] => {
-    return Array.from({ length: 8 }, (_, i) => ({
+    return Array.from({ length: 12 }, (_, i) => ({
         name: `Course ${i + 1} for Y${year}S${semester === 'First Semester' ? 1: 2}`,
         items: ['NOTES', 'ASSIGNMENTS/PROJECTS', 'PAST QUESTIONS'],
         files: {
