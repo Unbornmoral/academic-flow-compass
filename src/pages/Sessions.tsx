@@ -1,4 +1,3 @@
-
 import {
   Accordion,
   AccordionContent,
@@ -8,19 +7,32 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { sessionsData, UploadedFile, CourseItem, Course } from "@/data/sessions";
+import { sessionsData, UploadedFile, CourseItem, Course, Assignment } from "@/data/sessions";
 import FileUpload from "@/components/FileUpload";
 import RoleSelector from "@/components/RoleSelector";
 import CourseEditor from "@/components/CourseEditor";
+import AssignmentEditor from "@/components/AssignmentEditor";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 import { useRole } from "@/contexts/RoleContext";
 import { ArrowLeft, Plus } from "lucide-react";
 
 const SessionsPage = () => {
-  const { role, setRole, canUpload, canView, canEditCourses, canEditContent } = useRole();
+  const { 
+    role, 
+    setRole, 
+    canUpload, 
+    canView, 
+    canEditCourses, 
+    canEditContent, 
+    canDeleteCourses,
+    canUploadFiles,
+    canEditAssignments
+  } = useRole();
+  
   const [courseFiles, setCourseFiles] = useLocalStorage<Record<string, Record<CourseItem, UploadedFile[]>>>('courseFiles', {});
   const [courseUnits, setCourseUnits] = useLocalStorage<Record<string, number>>('courseUnits', {});
   const [customSessions, setCustomSessions] = useLocalStorage('customSessions', sessionsData);
+  const [courseAssignments, setCourseAssignments] = useLocalStorage<Record<string, Assignment[]>>('courseAssignments', {});
 
   const getCourseKey = (yearName: string, semesterName: string, courseName: string) => {
     return `${yearName}-${semesterName}-${courseName}`;
@@ -53,6 +65,19 @@ const SessionsPage = () => {
   const getCourseUnits = (yearName: string, semesterName: string, courseName: string): number => {
     const courseKey = getCourseKey(yearName, semesterName, courseName);
     return courseUnits[courseKey] || 3;
+  };
+
+  const updateCourseAssignments = (yearName: string, semesterName: string, courseName: string, assignments: Assignment[]) => {
+    const courseKey = getCourseKey(yearName, semesterName, courseName);
+    setCourseAssignments(prev => ({
+      ...prev,
+      [courseKey]: assignments
+    }));
+  };
+
+  const getCourseAssignments = (yearName: string, semesterName: string, courseName: string): Assignment[] => {
+    const courseKey = getCourseKey(yearName, semesterName, courseName);
+    return courseAssignments[courseKey] || [];
   };
 
   const updateCourse = (yearName: string, semesterName: string, oldCourseName: string, updatedCourse: Partial<Course>) => {
@@ -109,7 +134,8 @@ const SessionsPage = () => {
         'NOTES': [],
         'ASSIGNMENTS/PROJECTS': [],
         'PAST QUESTIONS': []
-      }
+      },
+      assignments: []
     };
 
     setCustomSessions(prev => prev.map(year => {
@@ -137,7 +163,7 @@ const SessionsPage = () => {
 
   const getRoleDisplayName = () => {
     switch (role) {
-      case 'developer': return 'Developer';
+      case 'developer': return 'Developer (Kamal)';
       case 'administrator': return 'Administrator';
       case 'lecturer': return 'Lecturer';
       case 'student': return 'Student';
@@ -149,7 +175,7 @@ const SessionsPage = () => {
     <div className="container mx-auto py-10">
       <div className="flex items-center justify-between mb-8">
         <h1 className="text-4xl font-bold tracking-tight">
-          Sessions - {getRoleDisplayName()} Mode
+          Political Science Sessions - {getRoleDisplayName()} Mode
         </h1>
         <Button variant="outline" onClick={() => setRole(null)}>
           <ArrowLeft className="w-4 h-4 mr-2" />
@@ -157,7 +183,7 @@ const SessionsPage = () => {
         </Button>
       </div>
 
-      {!canUpload && (
+      {role === 'student' && (
         <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
           <p className="text-blue-800">
             You are viewing in student mode. You can download and view files but cannot upload new ones.
@@ -228,12 +254,22 @@ const SessionsPage = () => {
                                         {item}
                                       </AccordionTrigger>
                                       <AccordionContent className="px-2 py-4">
-                                        <FileUpload
-                                          files={getCourseFiles(year.name, semester.name, course.name, item)}
-                                          onFilesChange={(files) => updateCourseFiles(year.name, semester.name, course.name, item, files)}
-                                          itemType={`${year.name}-${semester.name}-${course.name}-${item}`}
-                                          readOnly={!canUpload}
-                                        />
+                                        {item === 'ASSIGNMENTS/PROJECTS' ? (
+                                          <AssignmentEditor
+                                            assignments={getCourseAssignments(year.name, semester.name, course.name)}
+                                            onUpdateAssignments={(assignments) => 
+                                              updateCourseAssignments(year.name, semester.name, course.name, assignments)
+                                            }
+                                            canEdit={canEditAssignments}
+                                          />
+                                        ) : (
+                                          <FileUpload
+                                            files={getCourseFiles(year.name, semester.name, course.name, item)}
+                                            onFilesChange={(files) => updateCourseFiles(year.name, semester.name, course.name, item, files)}
+                                            itemType={`${year.name}-${semester.name}-${course.name}-${item}`}
+                                            readOnly={!canUploadFiles}
+                                          />
+                                        )}
                                       </AccordionContent>
                                     </AccordionItem>
                                   ))}

@@ -10,6 +10,9 @@ interface RoleContextType {
   canView: boolean;
   canEditCourses: boolean;
   canEditContent: boolean;
+  canDeleteCourses: boolean;
+  canUploadFiles: boolean;
+  canEditAssignments: boolean;
 }
 
 const RoleContext = createContext<RoleContextType | undefined>(undefined);
@@ -33,6 +36,9 @@ export const RoleProvider = ({ children }: RoleProviderProps) => {
   const canView = role !== null;
   const canEditCourses = role === 'lecturer' || role === 'administrator' || role === 'developer';
   const canEditContent = role === 'administrator' || role === 'developer';
+  const canDeleteCourses = role === 'administrator' || role === 'developer';
+  const canUploadFiles = role === 'lecturer' || role === 'administrator' || role === 'developer';
+  const canEditAssignments = role === 'lecturer' || role === 'administrator' || role === 'developer';
 
   return (
     <RoleContext.Provider value={{ 
@@ -41,7 +47,10 @@ export const RoleProvider = ({ children }: RoleProviderProps) => {
       canUpload, 
       canView, 
       canEditCourses,
-      canEditContent 
+      canEditContent,
+      canDeleteCourses,
+      canUploadFiles,
+      canEditAssignments
     }}>
       {children}
     </RoleContext.Provider>

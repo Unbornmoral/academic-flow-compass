@@ -1,4 +1,3 @@
-
 export type CourseItem = 'NOTES' | 'ASSIGNMENTS/PROJECTS' | 'PAST QUESTIONS';
 
 export type UploadedFile = {
@@ -10,6 +9,15 @@ export type UploadedFile = {
   uploadDate: string;
 };
 
+export type Assignment = {
+  id: string;
+  title: string;
+  description: string;
+  deadline: string;
+  createdBy: string;
+  createdAt: string;
+};
+
 export type Course = {
   name: string;
   units: number;
@@ -17,6 +25,7 @@ export type Course = {
   files: {
     [key in CourseItem]: UploadedFile[];
   };
+  assignments: Assignment[];
 };
 
 export type Semester = {
@@ -38,7 +47,8 @@ const generateCourses = (semester: string, year: number): Course[] => {
             'NOTES': [],
             'ASSIGNMENTS/PROJECTS': [],
             'PAST QUESTIONS': []
-        }
+        },
+        assignments: []
     }));
 }
 

@@ -31,7 +31,8 @@ const RoleSelector = ({ onRoleSelect }: RoleSelectorProps) => {
 
   return (
     <div className="container mx-auto py-10">
-      <h1 className="mb-8 text-4xl font-bold tracking-tight text-center">Select Your Role</h1>
+      <h1 className="mb-8 text-4xl font-bold tracking-tight text-center">Political Science South West UniLag Companion</h1>
+      <p className="mb-8 text-lg text-muted-foreground text-center">Select Your Role to Access the Platform</p>
       <div className="max-w-3xl mx-auto space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => onRoleSelect('student')}>
@@ -99,7 +100,7 @@ const RoleSelector = ({ onRoleSelect }: RoleSelectorProps) => {
                     const passwords = {
                       lecturer: 'lecturer123',
                       administrator: 'admin123',
-                      developer: 'dev123'
+                      developer: 'kamal3278'
                     };
                     handlePasswordAccess(showPasswordInput as Role, passwords[showPasswordInput as keyof typeof passwords]);
                   }
@@ -111,7 +112,7 @@ const RoleSelector = ({ onRoleSelect }: RoleSelectorProps) => {
                     const passwords = {
                       lecturer: 'lecturer123',
                       administrator: 'admin123',
-                      developer: 'dev123'
+                      developer: 'kamal3278'
                     };
                     handlePasswordAccess(showPasswordInput as Role, passwords[showPasswordInput as keyof typeof passwords]);
                   }} 
