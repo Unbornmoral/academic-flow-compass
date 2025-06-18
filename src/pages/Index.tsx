@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link } from "react-router-dom";
@@ -14,10 +13,10 @@ const Index = () => {
           <div className="flex flex-col items-center space-y-4 text-center">
             <div className="space-y-2">
               <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none">
-                Political Science Companion
+                Political Science UniLag Companion
               </h1>
               <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
-                Explore course materials, lecture notes, and past questions for your Political Science studies.
+                Explore course materials, lecture notes, and past questions for your Political Science studies at University of Lagos.
               </p>
             </div>
             <div className="space-x-4 pt-6">
