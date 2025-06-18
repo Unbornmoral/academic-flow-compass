@@ -16,7 +16,7 @@ const Index = () => {
                 Political Science UniLag Companion
               </h1>
               <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
-                Explore course materials, lecture notes, and past questions for your Political Science studies at University of Lagos.
+                Explore course materials, lecture notes, and past questions for your Political Science studies at University of Lagos with real-time updates.
               </p>
             </div>
             <div className="space-x-4 pt-6">
@@ -39,7 +39,7 @@ const Index = () => {
               Everything You Need
             </h2>
             <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl mt-4">
-              Access comprehensive resources, connect with peers, and stay updated with the latest events.
+              Access comprehensive resources, connect with peers, and stay updated with the latest events in real-time.
             </p>
           </div>
           

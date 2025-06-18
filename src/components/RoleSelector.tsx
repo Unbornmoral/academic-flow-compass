@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -32,7 +31,7 @@ const RoleSelector = ({ onRoleSelect }: RoleSelectorProps) => {
   return (
     <div className="container mx-auto py-10">
       <h1 className="mb-8 text-4xl font-bold tracking-tight text-center">Political Science UniLag Companion</h1>
-      <p className="mb-8 text-lg text-muted-foreground text-center">Select Your Role to Access the Platform</p>
+      <p className="mb-8 text-lg text-muted-foreground text-center">Select Your Role to Access the Platform with Real-Time Updates</p>
       <div className="max-w-3xl mx-auto space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => onRoleSelect('student')}>

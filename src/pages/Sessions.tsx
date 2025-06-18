@@ -1,3 +1,4 @@
+
 import {
   Accordion,
   AccordionContent,
@@ -12,6 +13,7 @@ import FileUpload from "@/components/FileUpload";
 import RoleSelector from "@/components/RoleSelector";
 import CourseEditor from "@/components/CourseEditor";
 import AssignmentEditor from "@/components/AssignmentEditor";
+import RealTimeIndicator from "@/components/RealTimeIndicator";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 import { useRole } from "@/contexts/RoleContext";
 import { ArrowLeft, Plus } from "lucide-react";
@@ -173,20 +175,31 @@ const SessionsPage = () => {
 
   return (
     <div className="container mx-auto py-10">
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex items-center justify-between mb-4">
         <h1 className="text-4xl font-bold tracking-tight">
           Political Science Sessions - {getRoleDisplayName()} Mode
         </h1>
-        <Button variant="outline" onClick={() => setRole(null)}>
-          <ArrowLeft className="w-4 h-4 mr-2" />
-          Change Role
-        </Button>
+        <div className="flex items-center gap-4">
+          <RealTimeIndicator />
+          <Button variant="outline" onClick={() => setRole(null)}>
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Change Role
+          </Button>
+        </div>
       </div>
 
       {role === 'student' && (
         <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
           <p className="text-blue-800">
-            You are viewing in student mode. You can download and view files but cannot upload new ones.
+            You are viewing in student mode. You can download and view files but cannot upload new ones. Real-time updates will notify you of new content.
+          </p>
+        </div>
+      )}
+
+      {(role === 'lecturer' || role === 'administrator' || role === 'developer') && (
+        <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
+          <p className="text-green-800">
+            You have {role} permissions. Changes you make will be broadcasted to all users in real-time.
           </p>
         </div>
       )}
