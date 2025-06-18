@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link } from "react-router-dom";
 import { BookOpen, Users, Calendar, Mail, GraduationCap, FileText } from "lucide-react";
+import AIChat from "@/components/AIChat";
 
 const Index = () => {
   return (
@@ -36,7 +37,7 @@ const Index = () => {
         <div className="container px-4 md:px-6">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-              Everything You Need for Your Studies
+              Everything You Need
             </h2>
             <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl mt-4">
               Access comprehensive resources, connect with peers, and stay updated with the latest events.
@@ -155,6 +156,9 @@ const Index = () => {
           </div>
         </div>
       </section>
+
+      {/* AI Chat Component */}
+      <AIChat />
     </div>
   );
 };
